@@ -1,4 +1,4 @@
- ***Từ một dòng code bị comment đến nghi vấn phân quyền trong G4br13l***
+ # Từ một dòng code bị comment đến nghi vấn phân quyền trong G4br13l
 
 Nhật ký tự học và điều tra bảo mật của một sinh viên năm 02 An toàn Thông tin.
 
@@ -29,11 +29,11 @@ Có chút máu Séc(-cu-ri-ty) trong người, cứ thấy chữ “permission�
 
 ****Tham khảo tại đây:*** https://www.cloudflare.com/learning/access-management/authn-vs-authz/
 
-Tôi bắt đầu đặt câu hỏi: Nếu route vẫn cho người dùng đăng nhập đi qua (pass AuthN), nhưng cơ chế kiểm tra quyền tại đây đang bị comment out (AuthZ disabled), vậy điều gì ngăn người dùng yêu cầu dữ liệu mà họ không được phép xem?
+Tôi bắt đầu đặt câu hỏi: Nếu route vẫn cho người dùng đã đăng nhập đi qua (AuthN), nhưng decorator kiểm tra quyền tại đây đang bị comment out, vậy điều gì ngăn người dùng yêu cầu dữ liệu mà họ không được phép xem? Đây mới là câu hỏi cần kiểm chứng, chưa phải kết luận rằng route chắc chắn thiếu kiểm tra quyền.
 
 Vậy là tôi có giả thuyết đầu tiên để kiểm chứng:
 
-## 2. Hypothesis 1
+## 2. Giả thuyết 1
 
 Giả thuyết H1: ***Route trả về dữ liệu của một đối tượng khác chỉ dựa trên phiên đăng nhập hợp lệ của đối tượng hiện tại mà không kiểm tra quyền truy cập của đối tượng hiện tại.***
 
@@ -45,18 +45,18 @@ Tôi đăng nhập bằng User A, sau đó dùng curl gửi yêu cầu đến en
 
 ### Kết quả quan sát
 
-Server trả về HTTP 200 OK cùng một phản hồi JSON.
+Ứng dụng trên localhost trả về HTTP 200 OK cùng một phản hồi JSON.
 
 [Chèn lệnh đã sử dụng và kết quả đã được loại bỏ thông tin nhạy cảm tại đây.]
 
 Kết quả này ủng hộ giả thuyết H1: yêu cầu đã được xử lý thành công và có phản hồi dữ liệu. 
 Nhưng khoan đã! Việc này chỉ ra rằng một Huynh trưởng có thể GET thông tin của một Huynh trưởng khác. 
-Đây là điều bình thường hợp với thiết kế phân quyền của hệ thống đó giờ rồi nên chưa chắc đã là lỗi phân quyền.
+Việc một Huynh trưởng xem được thông tin cơ bản của Huynh trưởng khác có thể phù hợp với thiết kế hiện tại, nên kết quả này chưa đủ để kết luận có lỗi phân quyền.
 
-Tôi cần tìm đến một testcase vững chắc hơn, một kịch bản mà ở đó, Huynh trưởng chắc chắn 100% không được phép nhúng tay vào: Tính năng Điểm danh (Attendance)!
+Tôi cần một ca kiểm thử rõ ràng hơn, một kịch bản mà ở đó, Huynh trưởng chắc chắn 100% không được phép nhúng tay vào: Tính năng Điểm danh (Attendance)!
 Rõ ràng, Huynh trưởng lớp A chẳng có lý do và quyền hạn gì để xem sổ điểm danh của lớp B.
 
-## 3. Hypothesis 2
+## 3. Giả thuyết 2
 
 Dễ dàng hiểu rằng Huynh trưởng được phân công phụ trách lớp A không mặc nhiên có quyền xem sổ điểm danh của lớp B. 
 
@@ -64,9 +64,9 @@ Giả thuyết H2: Một tài khoản Huynh trưởng có thể đọc dữ li�
 
 Tôi đã tìm thấy route lấy điểm danh theo mã lớp trong mã nguồn. Route này sử dụng @authn mà không hề đụng đến decorator @permission, cũng có thể route để kiểm tra AuthZ nằm ở 1 nơi nào khác. Nên chúng ta cần kiểm tra thực tế.
 
-## 4. Thử nghiệm trên hệ thống đang chạy
+## 4. Thử nghiệm trên môi trường local
 
-Tôi tạo một tình huống gồm hai Teacher, hai Thiếu nhi và hai lớp:
+Tôi tạo một tình huống thử nghiệm gồm hai Huynh trưởng, hai Thiếu nhi và hai lớp:
 
 | Đối tượng   | Mã giả       | Phân công |
 | ----------- | ------------ | --------- |
@@ -87,31 +87,31 @@ Kết quả mong đợi:
 - Nếu Th 2 ra 403, còn TH 1 và TH 3 ra 200 -> Route vẫn có bước AuthZ, chỉ là đang nằm đâu đó và chúng ta cần tìm hiểu vì sao
 
 
-BẢNG KẾT QUẢ
+### Kết quả trước khi sửa
 
 | Trường hợp  | HTTP | Dữ liệu trả về |
 | ----------- | ---: | -------------- |
 | A xem lớp A |  200 | `HQ261009S1`   |
 | A xem lớp B |  200 | `HQ261009S2`   |
 | B xem lớp B |  200 | `HQ261009S2`   |
-Đây là một dấu hiệu đáng chú ý hơn nhiều so với thí nghiệm đầu tiên: Đáng nhẽ tài khoản Teacher A không được phép xem dữ liệu điểm danh của Lớp B, nhưng lại được -> H2 được ủng hộ.
+Đây là dấu hiệu đáng chú ý hơn thí nghiệm đầu tiên: tài khoản Huynh trưởng A xem được dữ liệu điểm danh lớp B dù chỉ được phân công lớp A. Kết quả này ủng hộ H2 trong môi trường local, với giả định rằng mỗi Huynh trưởng chỉ được xem điểm danh các lớp mình phụ trách.
 
-## 5. Vấn đề lớn hơn!
+## 5. Vì sao cần kiểm tra quyền ở phía máy chủ?
 
-Không dừng lại ở đó! Việc xem và tìm kiếm: Mã định của người dùng (ID User - từ H1), và Mã lớp (ID Courses) là public hoàn toàn trên hệ thống tìm kiếm!
+Mã người dùng và mã lớp có thể xuất hiện trong các chức năng tra cứu của ứng dụng. Tuy nhiên, việc mã định danh có thể nhìn thấy không tự nó tạo thành lỗi phân quyền; vấn đề cốt lõi là máy chủ có kiểm tra người gửi yêu cầu được phép truy cập đối tượng đó hay không.
 
 Nhưng mã định danh có thể nhìn thấy không tự nó tạo thành lỗi phân quyền nhưng vấn đề cốt lõi vẫn là liệu server có kiểm tra người gửi yêu cầu được phép truy cập đối tượng đó hay không.
 
-Một 'Huynh trưởng mũ đen' (maybe UITer năm 2) có thể tự động hóa bruce force để thu thập dữ liệu hàng loạt.
+Một người dùng có ý đồ xấu có thể thử tự động hóa các yêu cầu để thu thập dữ liệu hàng loạt. Đây mới là rủi ro có thể hình dung; thí nghiệm hiện tại chưa kiểm tra việc thu thập hàng loạt.
 
 
-## 6. Suggest a fix
+## 6. Đề xuất cách sửa
 
-Nhưng tìm ra vấn đề mới chỉ là một nửa câu chuyện. Dù gì tôi cũng đã join vào Team Dev rồi, biết đâu đây sẽ là contribution đầu tiên của tôi thì sao ^^. Tôi muốn thử xem liệu mình có thể tự đề xuất một bản sửa, với sự hỗ trợ của AI, thay vì chỉ dừng lại ở việc phát hiện vấn đề.
+Tìm ra một hành vi đáng ngờ mới chỉ là một nửa câu chuyện. Vì đã tham gia Team Dev, tôi muốn thử đề xuất một bản sửa với sự hỗ trợ của AI, thay vì chỉ dừng lại ở việc phát hiện vấn đề.
 
-Thật ra có nhiều hướng xử lý: Nhưng đơn giản là Trước khi truy vấn điểm danh, server phải kiểm tra người đang đăng nhập có được phân công vào lớp đang yêu cầu hay không.
+Có nhiều hướng xử lý. Với phạm vi thử nghiệm này, ý tưởng đơn giản nhất là: trước khi truy vấn điểm danh, máy chủ kiểm tra người đang đăng nhập có được phân công vào lớp được yêu cầu hay không.
 
-Thế là tôi promt AI viết đoạn code fix bổ sung đoạn kiểm tra vào `getAttendancesByCourse()`:
+Tôi nhờ AI gợi ý đoạn code bổ sung bước kiểm tra vào `getAttendancesByCourse()`, rồi thử nghiệm trên môi trường local:
 
 ```python
 user_courses = course_service.getUserCourses(
@@ -134,9 +134,9 @@ if not has_access:
 ```
 
 
-## 7. Retest — Thử lại sau khi sửa
+## 7. Kiểm thử lại sau khi sửa
 
-Nhờ tình yêu với UIT (cụ thể là AI Pro) mạnh mẽ hơn sự newbie của tôi, nên code cuối cùng cũng chạy được. Và đưa ra kết quả đẹp như mơ!
+Nhờ AI hỗ trợ và qua vài lần chỉnh sửa, tôi đã chạy được bản sửa trên môi trường local và thu được kết quả như kỳ vọng.
 
 |Trường hợp|Trước sửa|Sau sửa|
 |---|--:|--:|
@@ -148,7 +148,7 @@ Nhờ tình yêu với UIT (cụ thể là AI Pro) mạnh mẽ hơn sự newbie 
 
 **Vậy là tôi đã có một bản fix hoạt động đúng với ba testcase trên môi trường localhost!** Dĩ nhiên, đây chưa phải bằng chứng rằng production có cùng hành vi, và quy tắc phân quyền vẫn cần được Team Dev xác nhận.
 
-## 9. What I learnt & what I will do next
+## 9. Điều tôi học được và bước tiếp theo
 
 Điều tôi học được không chỉ là sự khác biệt giữa Authentication và Authorization. Tôi còn hiểu hơn cách biến một nghi vấn thành một thí nghiệm có thể kiểm chứng, và vì sao phải phân biệt kết quả thực tế với điều mình chỉ đang suy đoán.
 
