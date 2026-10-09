@@ -1,6 +1,6 @@
--- Local-only schema prerequisites for the G4br13l source mirror.
--- Review the existing schema first. Run only statements for missing objects.
--- This is NOT an official project migration. Keep for private/local review only.
+-- Các điều kiện schema chỉ dành cho bản source mirror chạy trên máy local.
+-- Kiểm tra schema hiện có trước; chỉ chạy câu lệnh cho đối tượng còn thiếu.
+-- Đây KHÔNG phải migration chính thức. Giữ riêng để rà soát nội bộ.
 
 ALTER TABLE course ADD COLUMN shift_id INT NULL;
 
