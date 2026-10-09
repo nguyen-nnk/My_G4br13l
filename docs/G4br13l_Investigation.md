@@ -1,59 +1,61 @@
-**Project:** G4br13l  
-**Investigation:** Kiểm tra quyền truy cập dữ liệu điểm danh giữa các lớp  
-**Environment:** Local development environment, Flask test client, MySQL  
-**Status:** Đã tái hiện hành vi trên dữ liệu giả và kiểm thử bản sửa cục bộ
-## 1. Environment Setup
+# Sổ tay thí nghiệm — G4br13l
 
-### 1.1. Check MySQL container
+**Mục tiêu:** Kiểm tra quyền đọc dữ liệu điểm danh giữa các lớp  
+**Môi trường:** Bản source chạy local, Flask test client, MySQL  
+**Trạng thái:** Đã thử nghiệm trên dữ liệu giả và kiểm tra bản sửa cục bộ
+
+> Lưu ý: các lệnh trong tài liệu này tác động tới môi trường local. Không chạy chúng trên production. Dữ liệu thử nghiệm dùng tiền tố `HQ261009`.
+
+## 1. Chuẩn bị môi trường
+
+### 1.1. Kiểm tra container MySQL
 
 ```bash
 docker exec gabriel-mysql mysqladmin -u gabriel -pgabriel ping
 ```
 
-Expected result:
+Kết quả mong đợi:
 
 ```text
 mysqld is alive
 ```
 
-### 1.2. Check local backend
+### 1.2. Kiểm tra backend local
 
 ```bash
 curl -s -o /dev/null -w "HTTP %{http_code}\n" \
   http://127.0.0.1:9001/api/guest
 ```
 
-Expected result:
+Kết quả mong đợi:
 
 ```text
 HTTP 200
 ```
 
-
-## 2. Test Data
+## 2. Dữ liệu thử nghiệm
 
 **Database:** `gabriel_dev`
 
-**Fake entities:**
+| Đối tượng | Mã giả | Lớp được phân công |
+|---|---|---|
+| Huynh trưởng A | `HQ261009T1` | `HQ261009A` |
+| Huynh trưởng B | `HQ261009T2` | `HQ261009B` |
+| Thiếu nhi A | `HQ261009S1` | `HQ261009A` |
+| Thiếu nhi B | `HQ261009S2` | `HQ261009B` |
 
-| Entity    | Code         | Assigned class |
-| --------- | ------------ | -------------- |
-| Teacher A | `HQ261009T1` | `HQ261009A`    |
-| Teacher B | `HQ261009T2` | `HQ261009B`    |
-| Student A | `HQ261009S1` | `HQ261009A`    |
-| Student B | `HQ261009S2` | `HQ261009B`    |
-Các câu lệnh SQL trong database `gabriel_dev`
+Các câu lệnh SQL dưới đây dành cho database local `gabriel_dev`. Chỉ sử dụng sau khi đã xác nhận đúng môi trường và các bảng/cột cần thiết đã tồn tại.
 
 ```sql
 START TRANSACTION;
 
 INSERT INTO grade (code, name, year_code, created_by)
-VALUES ('HQ261009G', 'LAB Test Grade', '2023-2024', 'HQ-LAB');
+VALUES ('HQ261009G', 'Lớp thử nghiệm của lab', '2023-2024', 'HQ-LAB');
 
 INSERT INTO course (code, name, grade_code, shift_id, created_by)
 VALUES
-('HQ261009A', 'LAB Test Class A', 'HQ261009G', NULL, 'HQ-LAB'),
-('HQ261009B', 'LAB Test Class B', 'HQ261009G', NULL, 'HQ-LAB');
+('HQ261009A', 'Lớp thử nghiệm A', 'HQ261009G', NULL, 'HQ-LAB'),
+('HQ261009B', 'Lớp thử nghiệm B', 'HQ261009G', NULL, 'HQ-LAB');
 
 INSERT INTO user
 (code, level, baptism_name, last_name, first_name, gender,
@@ -79,8 +81,8 @@ VALUES
 INSERT INTO timetable
 (course_code, date, title, is_required, is_day_off, created_by)
 VALUES
-('HQ261009A', '2024-01-07', 'LAB Attendance A', 1, 0, 'HQ-LAB'),
-('HQ261009B', '2024-01-07', 'LAB Attendance B', 1, 0, 'HQ-LAB');
+('HQ261009A', '2024-01-07', 'Điểm danh thử nghiệm A', 1, 0, 'HQ-LAB'),
+('HQ261009B', '2024-01-07', 'Điểm danh thử nghiệm B', 1, 0, 'HQ-LAB');
 
 INSERT INTO attendance
 (code, course_code, date, status, reason, created_by)
@@ -93,8 +95,9 @@ VALUES
 COMMIT;
 ```
 
+### Lệnh kiểm thử trên bản source local
 
-Lệnh chạy thử nghiệm:
+Đoạn mã này tạo sẵn phiên đã xác thực bằng Flask test client; nó **không** kiểm tra luồng đăng nhập thật hay Casdoor.
 
 ```bash
 python - <<'PY'
@@ -132,31 +135,24 @@ for label, teacher_code, course_code in tests:
             student_codes.append(row.get("student_code"))
 
     print(f"\n--- {label} ---")
-    print("HTTP:", response.status_code)
+    print("Mã HTTP:", response.status_code)
     print("Trạng thái:", body.get("status"))
     print("Mã Thiếu nhi trả về:", student_codes)
     print("Thông báo:", body.get("message"))
 PY
 ```
 
-Kết quả trước khi sửa:
+### Kết quả trước khi sửa
 
-| Trường hợp  | HTTP | Dữ liệu trả về |
-| ----------- | ---: | -------------- |
-| A xem lớp A |  200 | `HQ261009S1`   |
-| A xem lớp B |  200 | `HQ261009S2`   |
-| B xem lớp B |  200 | `HQ261009S2`   |
-## 3. Implementing a local fix
+| Trường hợp | HTTP | Mã Thiếu nhi trả về |
+|---|---:|---|
+| A xem lớp A | 200 | `HQ261009S1` |
+| A xem lớp B | 200 | `HQ261009S2` |
+| B xem lớp B | 200 | `HQ261009S2` |
 
-Trong thư mục  server/route/course.py: 
+## 3. Đề xuất bản sửa cục bộ
 
-Thêm ngay phía trên dòng (vì cần kiểm tra trước khi thực thi):
-
-```python
-rows = course_service.getAttendancesByCourseCode(course_code=code, date=date)
-```
-
-Đoạn code fix:
+Trong `server/route/course.py`, thêm bước kiểm tra phân công sau khi xác nhận lớp tồn tại và trước khi truy vấn các bản ghi điểm danh.
 
 ```python
 user_courses = course_service.getUserCourses(
@@ -176,26 +172,32 @@ has_access = any(
 
 if not has_access:
     abort(403, "Bạn không có quyền xem điểm danh chi đoàn này")
-## 5. Test Results
-
-Endpoint:
-
-```http
-GET /v1/courses/<code>/attendances
 ```
 
-Kết quả:
+Đây là đề xuất để review, không phải thay đổi đã được triển khai lên production. Cần xác nhận với Team Dev rằng giáo viên/trợ giảng chỉ được xem điểm danh những lớp đang được phân công.
 
-|Test case|Before patch|After patch|
-|---|--:|--:|
-|Teacher A → Class A|`200 OK`|`200 OK`|
-|Teacher A → Class B|`200 OK`|`403 Forbidden`|
-|Teacher B → Class B|`200 OK`|`200 OK`|
+## 4. Xác minh thay đổi
 
-## 4. Patch Verification
+Chạy trong bản source local:
 
 ```bash
 git diff -- server/route/course.py
 ```
 
-**Expected:** A new course-assignment authorization check in `getAttendancesByCourse()` before querying attendance records.
+Cần thấy bước kiểm tra phân công lớp trong hàm `getAttendancesByCourse()`, trước đoạn truy vấn dữ liệu điểm danh.
+
+## 5. Kết quả kiểm thử sau khi sửa
+
+| Trường hợp | Trước bản sửa | Sau bản sửa |
+|---|---:|---:|
+| Huynh trưởng A xem lớp A | `200 OK` | `200 OK` |
+| Huynh trưởng A xem lớp B | `200 OK` | `403 Forbidden` |
+| Huynh trưởng B xem lớp B | `200 OK` | `200 OK` |
+
+## 6. Việc chưa kiểm tra
+
+- Chưa xác nhận chính sách phân quyền với Team Dev.
+- Chưa kiểm tra hành vi cache khi phân công bị đổi hoặc thu hồi.
+- Chưa kiểm tra luồng đăng nhập thật.
+- Chưa xác nhận production có cùng hành vi với môi trường local.
+- Bản sửa chưa được triển khai và chưa gửi pull request.
