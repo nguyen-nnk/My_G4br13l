@@ -1,5 +1,5 @@
--- Standalone SQLite demo data for G4br13l attendance authorization.
--- All identifiers and attendance records are fake. No Gabriel schema is used.
+-- Dữ liệu SQLite cho lab mô phỏng phân quyền điểm danh G4br13l.
+-- Mọi mã định danh và bản ghi điểm danh đều là dữ liệu giả; không dùng schema Gabriel.
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS courses (
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS attendance (
 );
 
 INSERT INTO courses (code, name) VALUES
-    ('HQ261009A', 'LAB Test Class A'),
-    ('HQ261009B', 'LAB Test Class B')
+    ('HQ261009A', 'Lớp thử nghiệm A'),
+    ('HQ261009B', 'Lớp thử nghiệm B')
 ON CONFLICT(code) DO UPDATE SET name = excluded.name;
 
 INSERT INTO users (code, role) VALUES
