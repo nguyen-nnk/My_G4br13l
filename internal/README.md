@@ -1,12 +1,12 @@
-# Internal Review Artifacts — G4br13l
+# Tài liệu dành cho review nội bộ — G4br13l
 
-**Do not publish this directory without explicit review and permission from the project owner/team.**
+**Không công khai thư mục này nếu chưa được chủ dự án/Team Dev xem xét và cho phép rõ ràng.**
 
-This folder contains artifacts tied to the private Gabriel source mirror and its local database setup:
+Thư mục này chứa các tài liệu gắn trực tiếp với bản source Gabriel được lưu riêng và cơ sở dữ liệu thử nghiệm local:
 
-- `attendance-access-control.diff`: proposed source-specific change for Team Dev review.
-- `schema-local-prereqs.sql`: local schema adjustments made to get the mirror's code running against the local test database.
+- `attendance-access-control.diff`: bản sửa đề xuất để Team Dev xem xét.
+- `schema-local-prereqs.sql`: các điều chỉnh schema local từng cần để chạy bản source mirror với database thử nghiệm.
 
-These files are not part of the standalone public-facing lab. Before sharing, confirm permission with the project owner/team and inspect for source-derived details, environment-specific assumptions, secrets, and any information that should not be disclosed.
+Các tệp này không thuộc lab mô phỏng độc lập. Trước khi chia sẻ, cần xác nhận quyền chia sẻ với chủ dự án/Team Dev, đồng thời rà soát thông tin suy ra từ mã nguồn, giả định riêng của môi trường, bí mật và mọi nội dung không nên công bố.
 
-The repository is private. This note is a reminder, not an access-control mechanism.
+Repository hiện ở chế độ riêng tư. Ghi chú này chỉ nhắc về quy trình, bản thân nó không phải một cơ chế kiểm soát truy cập.
