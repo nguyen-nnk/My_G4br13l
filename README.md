@@ -1,55 +1,55 @@
-# G4br13l — Security Case Study
+# G4br13l — Nhật ký điều tra bảo mật
 
-> **From a commented-out decorator to a local authorization investigation.**
+> **Từ một dòng decorator bị vô hiệu hóa đến thí nghiệm kiểm tra phân quyền trên localhost.**
 
-G4br13l is a student-led security case study based on exploring the Gabriel web application's source code. The investigation began after noticing a commented-out `@permission` decorator, then focused on a narrower question: should a teacher be able to read attendance records for a class they are not assigned to?
+G4br13l là project tự học và điều tra bảo mật của một sinh viên, bắt đầu từ việc đọc mã nguồn ứng dụng Gabriel. Khi tình cờ thấy decorator `@permission` bị comment out, tôi đặt câu hỏi về sự khác nhau giữa đăng nhập và quyền truy cập. Sau đó, tôi thu hẹp phạm vi điều tra vào một tình huống cụ thể: **Huynh trưởng phụ trách lớp A có xem được sổ điểm danh của lớp B hay không?**
 
-## Project map
+## Các phần của project
 
-| Part | Purpose |
+| Phần | Nội dung |
 |---|---|
-| [Investigation WriteUp](docs/Project_G4br13l.md) | The investigation narrative: observation, hypotheses, proposed fix, retest and lessons learned. |
-| [Lab Notebook](docs/G4br13l_Investigation.md) | Commands, experimental setup and notes from the original local investigation. |
-| [Standalone Lab](lab/README.md) | A small Flask + SQLite model that demonstrates the authorization rule without importing Gabriel's source. |
-| [Internal Review Artifacts](internal/README.md) | Source-specific patch and local schema prerequisites, kept separate from the standalone lab. |
+| [Nhật ký điều tra](docs/Project_G4br13l.md) | Câu chuyện từ lúc quan sát code, hình thành giả thuyết, thử nghiệm, đề xuất sửa và kiểm thử lại. |
+| [Sổ tay thí nghiệm](docs/G4br13l_Investigation.md) | Lệnh chạy, dữ liệu thử nghiệm và ghi chú khi kiểm tra bản source trên môi trường local. |
+| [Lab mô phỏng độc lập](lab/README.md) | Ứng dụng Flask + SQLite nhỏ để minh họa quy tắc phân quyền, không cần source Gabriel. |
+| [Tài liệu dành cho review nội bộ](internal/README.md) | Bản diff đề xuất và ghi chú schema chỉ dùng khi rà soát bản source trên máy local. |
 
-## Finding under investigation
+## Quan sát chính
 
-The original local experiment used fake assignments for two teachers and two classes. Before adding a class-assignment check, the local endpoint returned attendance data for Class B when requested by Teacher A, who was assigned only to Class A.
+Trong thí nghiệm local với dữ liệu giả gồm hai Huynh trưởng và hai lớp, trước khi thêm bước kiểm tra phân công, API điểm danh trả dữ liệu của lớp B khi tài khoản Huynh trưởng A yêu cầu, dù A chỉ được phân công lớp A.
 
-A proposed local fix checked the user's active class assignments before returning attendance. The recorded before/after results were:
+Tôi đề xuất kiểm tra phân công lớp còn hiệu lực trước khi trả dữ liệu điểm danh. Kết quả kiểm thử trên bản source local được ghi nhận như sau:
 
-| Test case | Before change | After change |
+| Trường hợp | Trước khi sửa | Sau khi sửa |
 |---|---:|---:|
-| Teacher A → Class A | `200 OK` | `200 OK` |
-| Teacher A → Class B | `200 OK` | `403 Forbidden` |
-| Teacher B → Class B | `200 OK` | `200 OK` |
+| Huynh trưởng A xem lớp A | `200 OK` | `200 OK` |
+| Huynh trưởng A xem lớp B | `200 OK` | `403 Forbidden` |
+| Huynh trưởng B xem lớp B | `200 OK` | `200 OK` |
 
-These results are evidence from the local test setup, not confirmation that production has the same behavior or that the proposed rule matches the full business policy.
+Đây là kết quả từ môi trường local và dữ liệu giả. Nó **không chứng minh production có cùng hành vi**, cũng chưa xác nhận quy tắc được thử nghiệm hoàn toàn trùng với chính sách nghiệp vụ của Team Dev.
 
-## Standalone lab
+## Lab mô phỏng độc lập
 
-The self-contained lab in `lab/` uses Flask, SQLite, fake identifiers and Flask's test client. It is an educational simulation: it does not load, copy or execute the Gabriel application. Its purpose is to make the principle and expected test cases easy to reproduce.
+Thư mục `lab/` chứa mô hình Flask + SQLite dùng dữ liệu giả và Flask test client. Lab không import, không chạy và không cần sao chép ứng dụng Gabriel. Mục tiêu là giúp người đọc tự chạy lại các ca kiểm thử để hiểu vì sao cần kiểm tra quyền trên từng lớp.
 
-Start with the [lab instructions](lab/README.md).
+Bắt đầu tại [hướng dẫn chạy lab](lab/README.md).
 
-## Current status
+## Tiến độ
 
-- [x] Read the relevant route and related assignment logic.
-- [x] Record the local experiment and its results.
-- [x] Prepare a source-specific patch proposal for internal review.
-- [x] Build a standalone teaching model with fake data.
-- [ ] Run the standalone lab from a clean local environment and record the output.
-- [ ] Confirm the intended class-access policy with Team Dev.
-- [ ] Investigate cache behavior when assignments change or are revoked.
-- [ ] Request review before considering a pull request.
+- [x] Đọc route liên quan và tìm hiểu logic phân công lớp.
+- [x] Ghi lại thí nghiệm local với dữ liệu giả.
+- [x] Đề xuất một bản sửa để review nội bộ.
+- [x] Tạo lab mô phỏng độc lập.
+- [ ] Chạy lab từ môi trường sạch và lưu lại kết quả.
+- [ ] Nhờ Team Dev xác nhận chính sách xem điểm danh theo lớp.
+- [ ] Kiểm tra thêm hành vi cache khi phân công thay đổi hoặc bị thu hồi.
+- [ ] Chỉ cân nhắc tạo pull request sau khi được review và cho phép.
 
-## Scope and limitations
+## Phạm vi và giới hạn
 
-- The original app test used fake data on a local development setup.
-- Its Flask test client simulated an already-authenticated session; the real login flow was not tested.
-- The standalone demo is a model of the rule, not a reproduction of the entire Gabriel application.
-- The proposed source patch has not been deployed and no pull request has been submitted.
-- Production behavior and the final business authorization policy remain unconfirmed.
+- Thí nghiệm với ứng dụng gốc được thực hiện trên môi trường phát triển local và dùng dữ liệu giả.
+- Flask test client tạo sẵn phiên đã xác thực; thí nghiệm không kiểm tra luồng đăng nhập thật.
+- Lab độc lập chỉ minh họa nguyên tắc, không phải bản tái tạo toàn bộ ứng dụng Gabriel.
+- Bản sửa đề xuất chưa được triển khai lên production và chưa có pull request.
+- Hành vi production và chính sách phân quyền cuối cùng vẫn cần được xác nhận.
 
-This repository is private while the investigation, source-specific artifacts and permissions are being reviewed. Do not make it public or share internal artifacts until the project owner/team has confirmed what may be disclosed.
+Repository được giữ ở chế độ riêng tư trong thời gian rà soát nội dung và quyền chia sẻ. Không công khai repository hoặc chia sẻ tài liệu nội bộ trước khi được chủ dự án/Team Dev cho phép.
