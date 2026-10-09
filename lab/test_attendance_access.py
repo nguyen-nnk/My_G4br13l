@@ -66,7 +66,7 @@ def main():
     after_ok = run_group("SAU KHI THÊM BƯỚC KIỂM TRA (mô phỏng: đã bật kiểm tra phân công)", True)
     if not (before_ok and after_ok):
         raise SystemExit(1)
-    print("\nPASS: simulation produced the expected before/after behavior.")
+    print("\nPASS: mô phỏng cho kết quả trước/sau đúng như mong đợi.")
     print("Lưu ý: đây là mô hình học tập, không phải kiểm thử mã nguồn Gabriel.")
 
 
