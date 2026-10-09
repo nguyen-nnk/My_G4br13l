@@ -1,6 +1,6 @@
-"""Small standalone Flask/SQLite model of class-level attendance authorization.
+"""Mô hình Flask/SQLite độc lập để minh họa phân quyền điểm danh theo lớp.
 
-This is an educational simulation, not the Gabriel application or its source.
+Đây là mô hình học tập, không phải ứng dụng Gabriel hay mã nguồn của ứng dụng đó.
 """
 from pathlib import Path
 import sqlite3
@@ -11,7 +11,7 @@ LAB_DIR = Path(__file__).resolve().parent
 
 
 def create_app(enforce_assignment: bool = True, database_path: str | None = None) -> Flask:
-    """Create a demo app; assignment enforcement can be toggled for comparison."""
+    """Tạo ứng dụng minh họa; có thể bật/tắt kiểm tra phân công để so sánh."""
     app = Flask(__name__)
     app.secret_key = "local-demo-only-do-not-use-in-production"
     app.config["ENFORCE_ASSIGNMENT"] = enforce_assignment
@@ -26,13 +26,13 @@ def create_app(enforce_assignment: bool = True, database_path: str | None = None
     def get_attendances(course_code: str):
         teacher_code = session.get("teacher_code")
         if not teacher_code:
-            return jsonify(status="unauthorized", data=[], message="Login required"), 401
+            return jsonify(status="unauthorized", data=[], message="Vui lòng đăng nhập"), 401
 
         course = db.execute(
             "SELECT code FROM courses WHERE code = ?", (course_code,)
         ).fetchone()
         if course is None:
-            return jsonify(status="not_found", data=[], message="Course not found"), 404
+            return jsonify(status="not_found", data=[], message="Không tìm thấy lớp"), 404
 
         if app.config["ENFORCE_ASSIGNMENT"]:
             assignment = db.execute(
@@ -47,7 +47,7 @@ def create_app(enforce_assignment: bool = True, database_path: str | None = None
                 return jsonify(
                     status="forbidden",
                     data=[],
-                    message="You are not assigned to this class",
+                    message="Bạn không được phân công phụ trách lớp này",
                 ), 403
 
         rows = db.execute(
