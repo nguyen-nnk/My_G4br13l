@@ -1,16 +1,16 @@
-"""Compare a simplified attendance endpoint before/after an assignment check.
+"""So sánh endpoint điểm danh mô phỏng trước và sau khi kiểm tra phân công.
 
-Run with:
+Chạy bằng:
     python test_attendance_access.py
 
-Uses only demo_app.py, Flask's test client, and SQLite fake data. It does NOT import Gabriel.
+Chỉ dùng demo_app.py, Flask test client và dữ liệu SQLite giả. Không import Gabriel.
 """
 from demo_app import create_app
 
 CASES = [
-    ("Teacher A -> Class A", "HQ261009T1", "HQ261009A", ["HQ261009S1"]),
-    ("Teacher A -> Class B", "HQ261009T1", "HQ261009B", ["HQ261009S2"]),
-    ("Teacher B -> Class B", "HQ261009T2", "HQ261009B", ["HQ261009S2"]),
+    ("Huynh trưởng A xem lớp A", "HQ261009T1", "HQ261009A", ["HQ261009S1"]),
+    ("Huynh trưởng A xem lớp B", "HQ261009T1", "HQ261009B", ["HQ261009S2"]),
+    ("Huynh trưởng B xem lớp B", "HQ261009T2", "HQ261009B", ["HQ261009S2"]),
 ]
 
 
@@ -39,7 +39,7 @@ def run_group(title, enforce_assignment):
     try:
         for label, teacher_code, course_code, expected_codes in CASES:
             expected_status = (
-                403 if enforce_assignment and label == "Teacher A -> Class B" else 200
+                403 if enforce_assignment and label == "Huynh trưởng A xem lớp B" else 200
             )
             expected_response_codes = [] if expected_status == 403 else expected_codes
             response = make_client(app, teacher_code).get(
@@ -54,20 +54,20 @@ def run_group(title, enforce_assignment):
             )
             all_passed = all_passed and passed
             print(f"{'PASS' if passed else 'FAIL'} | {label}")
-            print(f"  HTTP: {response.status_code} (expected {expected_status})")
-            print(f"  Student codes: {codes} (expected {expected_response_codes})")
+            print(f"  Mã HTTP: {response.status_code} (mong đợi {expected_status})")
+            print(f"  Mã Thiếu nhi: {codes} (mong đợi {expected_response_codes})")
     finally:
         app.config["LAB_DB"].close()
     return all_passed
 
 
 def main():
-    before_ok = run_group("BEFORE PATCH (simulated: assignment check disabled)", False)
-    after_ok = run_group("AFTER PATCH (simulated: assignment check enabled)", True)
+    before_ok = run_group("TRƯỚC KHI THÊM BƯỚC KIỂM TRA (mô phỏng: đã tắt kiểm tra phân công)", False)
+    after_ok = run_group("SAU KHI THÊM BƯỚC KIỂM TRA (mô phỏng: đã bật kiểm tra phân công)", True)
     if not (before_ok and after_ok):
         raise SystemExit(1)
     print("\nPASS: simulation produced the expected before/after behavior.")
-    print("Note: this is an educational model, not a test of the Gabriel source code.")
+    print("Lưu ý: đây là mô hình học tập, không phải kiểm thử mã nguồn Gabriel.")
 
 
 if __name__ == "__main__":
