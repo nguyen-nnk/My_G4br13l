@@ -51,5 +51,3 @@ Bắt đầu tại [hướng dẫn chạy lab](lab/README.md).
 - Lab độc lập chỉ minh họa nguyên tắc, không phải bản tái tạo toàn bộ ứng dụng Gabriel.
 - Bản sửa đề xuất chưa được triển khai lên production và chưa có pull request.
 - Hành vi production và chính sách phân quyền cuối cùng vẫn cần được xác nhận.
-
-Repository được giữ ở chế độ riêng tư trong thời gian rà soát nội dung và quyền chia sẻ. Không công khai repository hoặc chia sẻ tài liệu nội bộ trước khi được chủ dự án/Team Dev cho phép.
