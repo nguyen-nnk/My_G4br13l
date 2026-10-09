@@ -1,0 +1,27 @@
+diff --git a/server/route/course.py b/server/route/course.py
+index e94ec64..d397caa 100644
+--- a/server/route/course.py
++++ b/server/route/course.py
+@@ -391,6 +391,25 @@ def getAttendancesByCourse(code=None):
+     if not course:
+         abort(404, "Không tìm thấy chi đoàn {}".format(code))
+ 
++    user_courses = course_service.getUserCourses(
++        user_code=g.user.code,
++        year_code=course.get('year_code')
++    )
++
++    has_access = any(
++        c.get('code') == code
++        and c.get('level') in (
++            UserLevel.TEACHER.value,
++            UserLevel.ASSISTANT.value
++        )
++        and not c.get('is_abandoned')
++        for c in user_courses
++    )
++
++    if not has_access:
++        abort(403, "Bạn không có quyền xem điểm danh chi đoàn này")
++
+     rows = course_service.getAttendancesByCourseCode(course_code=code, date=date)
