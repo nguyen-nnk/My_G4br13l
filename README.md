@@ -2,7 +2,7 @@
 
 > **Từ một dòng decorator bị vô hiệu hóa đến thí nghiệm kiểm tra phân quyền trên localhost.**
 
-G4br13l là project tự học và điều tra bảo mật của một sinh viên, bắt đầu từ việc đọc mã nguồn ứng dụng Gabriel. Khi tình cờ thấy decorator `@permission` bị comment out, tôi đặt câu hỏi về sự khác nhau giữa đăng nhập và quyền truy cập. Sau đó, tôi thu hẹp phạm vi điều tra vào một tình huống cụ thể: **Huynh trưởng phụ trách lớp A có xem được sổ điểm danh của lớp B hay không?**
+G4br13l là project tự học cá nhân tôi, bắt đầu từ việc đọc mã nguồn ứng dụng web Gabriel. Khi tình cờ thấy decorator `@permission` bị comment out, tôi đặt câu hỏi về sự khác nhau giữa đăng nhập và quyền truy cập. Sau đó, tôi thu hẹp phạm vi điều tra vào một tình huống cụ thể: **Huynh trưởng phụ trách lớp A có xem được sổ điểm danh của lớp B hay không?**
 
 ## Các phần của project
 
