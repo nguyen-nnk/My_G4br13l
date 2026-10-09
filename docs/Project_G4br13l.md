@@ -4,9 +4,9 @@ Nhật ký tự học và điều tra bảo mật của một sinh viên năm 02
 
 ## 0. Cơ hội để nghịch code
 
-Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website ***doantnttbinhthuan***. Mấy khi được chạm tay vào một hệ thống tầm cỡ, thực tế thế này, nên sau khi được invite collaborator, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
+Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website ***doantnttbinhthuan***. Mấy khi được chạm tay vào một hệ thống tầm cỡ, thực tế thế này, nên sau khi được mời làm cộng tác viên trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
 
-P/s: Tôi hoàn toàn - thật sự mù tịt về website development… *Cũng dễ hiểu thôi mà nhỉ... Các học kì trước tôi toàn ngặm ngoạn Computer Architecture, Operating System, Computer Network hay gần đây là môn System Programming, nên nói tới Low Level tôi còn biết chứ Web đồ thì bó tay.
+P/s: Tôi hoàn toàn - thật sự mù tịt về phát triển web… *Cũng dễ hiểu thôi mà nhỉ... Các học kì trước tôi toàn ngặm ngoạn Computer Architecture, Operating System, Computer Network hay gần đây là môn System Programming, nên nói tới lập trình mức thấp (Low Level) tôi còn biết chứ Web đồ thì bó tay.
 
 Để học nhanh và tiện, tôi clone --mirror kéo toàn bộ mã nguồn về, rồi lại đẩy lên một repo GitHub private của riêng tôi để ChatGPT có thể access được mà giải đáp các thắc mắc từ tôi. Chiến thuật vọc rất đơn giản: không hiểu chỗ nào thì hỏi chỗ đó, hổng kiến thức nào thì đắp ngay lỗ hổng đó. 
 
@@ -39,9 +39,9 @@ Giả thuyết H1: ***Route trả về dữ liệu của một đối tượng k
 
 ### Thí nghiệm
 
-Tôi dựng G4br13l trên localhost và tạo hai tài khoản thử nghiệm: User A và User B.
+Tôi chạy G4br13l trên localhost và tạo hai tài khoản thử nghiệm: Người dùng A và Người dùng B.
 
-Tôi đăng nhập bằng User A, sau đó dùng curl gửi yêu cầu đến endpoint tra cứu với phiên đăng nhập của User A nhưng ID được yêu cầu là của User B.
+Tôi đăng nhập bằng Người dùng A, sau đó dùng curl gửi yêu cầu đến API tra cứu với phiên đăng nhập của Người dùng A nhưng mã định danh được yêu cầu là của Người dùng B.
 
 ### Kết quả quan sát
 
@@ -70,8 +70,8 @@ Tôi tạo một tình huống thử nghiệm gồm hai Huynh trưởng, hai Thi
 
 | Đối tượng   | Mã giả       | Phân công |
 | ----------- | ------------ | --------- |
-| Teacher A   | `HQ261009T1` | Lớp A     |
-| Teacher B   | `HQ261009T2` | Lớp B     |
+| Huynh trưởng A | `HQ261009T1` | Lớp A     |
+| Huynh trưởng B | `HQ261009T2` | Lớp B     |
 | Thiếu nhi A | `HQ261009S1` | Lớp A     |
 | Thiếu nhi B | `HQ261009S2` | Lớp B     |
 
@@ -79,12 +79,12 @@ Tôi tạo một tình huống thử nghiệm gồm hai Huynh trưởng, hai Thi
 - Mỗi lớp có một buổi điểm danh vào ngày `2024-01-07`.
 
 Tôi sẽ xét 3 trường hợp:
-1. Teacher A xem Lớp A 
-2. Teacher A xem Lớp B
-3. Teacher B xem Lớp B
+1. Huynh trưởng A xem Lớp A 
+2. Huynh trưởng A xem Lớp B
+3. Huynh trưởng B xem Lớp B
 Kết quả mong đợi:
-- Nếu cả 3 ra 200 -> H2 được ủng hộ.
-- Nếu Th 2 ra 403, còn TH 1 và TH 3 ra 200 -> Route vẫn có bước AuthZ, chỉ là đang nằm đâu đó và chúng ta cần tìm hiểu vì sao
+- Nếu cả ba trường hợp đều trả về 200 -> H2 được ủng hộ.
+- Nếu trường hợp 2 trả về 403, còn trường hợp 1 và 3 trả về 200 -> route có thể đã kiểm tra quyền ở một nơi khác; cần tìm hiểu thêm.
 
 
 ### Kết quả trước khi sửa
@@ -144,9 +144,13 @@ Nhờ AI hỗ trợ và qua vài lần chỉnh sửa, tôi đã chạy được 
 |A xem lớp B|`200`|`403`|
 |B xem lớp B|`200`|`200`|
 
-Đúng với kỳ vọng của quy tắc phân quyền đang thử nghiệm: Teacher A vẫn xem được Lớp A mà mình phụ trách, nhưng bị từ chối khi yêu cầu Lớp B ngoài phạm vi được phân công.
+Đúng với kỳ vọng của quy tắc phân quyền đang thử nghiệm: Huynh trưởng A vẫn xem được Lớp A mình phụ trách, nhưng bị từ chối khi yêu cầu Lớp B ngoài phạm vi được phân công.
 
-**Vậy là tôi đã có một bản fix hoạt động đúng với ba testcase trên môi trường localhost!** Dĩ nhiên, đây chưa phải bằng chứng rằng production có cùng hành vi, và quy tắc phân quyền vẫn cần được Team Dev xác nhận.
+**Vậy là tôi đã có một bản sửa hoạt động đúng với ba ca kiểm thử trên localhost!** Dĩ nhiên, đây chưa phải bằng chứng rằng môi trường thật có cùng hành vi, và quy tắc phân quyền vẫn cần được nhóm phát triển xác nhận.
+
+## 8. Giới hạn của kết quả
+
+Kết quả trên chỉ được ghi nhận trong môi trường local với dữ liệu thử nghiệm giả. Phiên đăng nhập được tạo sẵn bằng Flask test client nên tôi chưa kiểm tra quy trình đăng nhập thật. Tôi cũng chưa xác nhận với nhóm phát triển rằng quyền xem điểm danh phải giới hạn đúng theo phân công lớp; chưa kiểm tra tác động của cache khi thay đổi phân công; và chưa thử nghiệm trên môi trường thật. Bản sửa hiện mới là đề xuất phục vụ review, chưa được triển khai và chưa gửi pull request.
 
 ## 9. Điều tôi học được và bước tiếp theo
 
