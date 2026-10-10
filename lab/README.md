@@ -17,6 +17,7 @@ Lab có hai chế độ để so sánh:
 | `seed.sql` | Cấu trúc SQLite và dữ liệu thử nghiệm giả |
 | `test_attendance_access.py` | So sánh ba trường hợp trước/sau bằng Flask test client |
 | `requirements.txt` | Thư viện cần cài để chạy lab |
+| `VERIFICATION.md` | Kết quả chạy test, kết luận và các giới hạn |
 
 ## Cách chạy
 
@@ -43,6 +44,8 @@ Không cần MySQL, backend Gabriel hay cấu hình Casdoor.
 
 Script kiểm tra cả mã HTTP và danh sách mã Thiếu nhi được trả về. Nếu kết quả không đúng như kỳ vọng, script in `FAIL` và kết thúc với mã lỗi khác 0.
 
+Kết quả đã chạy trong môi trường clone sạch: **6/6 lượt kiểm tra PASS**. Xem [biên bản Verify Lab](VERIFICATION.md).
+
 ## Phạm vi và giới hạn
 
 - Tất cả mã định danh và dữ liệu điểm danh đều là dữ liệu giả.
@@ -53,7 +56,7 @@ Script kiểm tra cả mã HTTP và danh sách mã Thiếu nhi được trả v�
 
 ## Liên quan đến quá trình điều tra
 
-- [Nhật ký điều tra bảo mật](../docs/Project_G4br13l.md)
-- [Sổ tay thí nghiệm trên bản source local](../docs/G4br13l_Investigation.md)
+- [Nhật ký điều tra bảo mật](../docs/01.G4br13l_WriteUp.md)
+- [Sổ tay thí nghiệm trên bản source local](../docs/02.G4br13l_Investigation.md)
 
 Bản diff dành cho source gốc và ghi chú schema local được giữ riêng để review nội bộ; chúng không phải thành phần của lab mô phỏng độc lập.
