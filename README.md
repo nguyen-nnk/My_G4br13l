@@ -4,11 +4,11 @@
 
 ## Cơ hội để nghịch code
 
-Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website **doantnttbinhthuan**. Mấy khi được chạm tay vào một hệ thống tầm cỡ thực tế thế này, nên sau khi được mời làm cộng tác viên trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
+Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website **doantnttbinhthuan**. Mấy khi được chạm tay vào một hệ thống tầm cỡ thực tế thế này, nên sau khi được join collaborator trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
 
 Trong lúc loay hoay bị code đè với Python decorator, tôi gặp một dòng `@permission` đang bị comment out.
 
-Từ một dòng code như thế, tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ biết đâu ăn may (may cho tôi.. xui cho dev) ở đây có vulnerability kiểu phân quyền như: DOR / BOLA...
+Tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ biết đâu ăn may (may cho tôi.. xui cho dev) ở đây có vulnerability kiểu phân quyền như: DOR / BOLA...
 
 ## Từ nghi vấn ban đầu đến bài toán cụ thể
 
