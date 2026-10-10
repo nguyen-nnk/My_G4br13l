@@ -1,12 +1,8 @@
-# Tài liệu dành cho review nội bộ — G4br13l
+# Tài liệu bổ sung về bản source local — G4br13l
 
-**Không công khai thư mục này nếu chưa được chủ dự án/Team Dev xem xét và cho phép rõ ràng.**
+Thư mục này chứa các tài liệu liên quan đến việc phân tích và chạy bản source mirror của Gabriel trong môi trường phát triển local:
 
-Thư mục này chứa các tài liệu gắn trực tiếp với bản source Gabriel được lưu riêng và cơ sở dữ liệu thử nghiệm local:
+- `attendance-access-control.diff`: bản sửa đề xuất để kiểm tra phân công lớp trước khi trả dữ liệu điểm danh.
+- `schema-local-prereqs.sql`: các điều chỉnh schema từng cần để chạy bản source mirror với database thử nghiệm local.
 
-- `attendance-access-control.diff`: bản sửa đề xuất để Team Dev xem xét.
-- `schema-local-prereqs.sql`: các điều chỉnh schema local từng cần để chạy bản source mirror với database thử nghiệm.
-
-Các tệp này không thuộc lab mô phỏng độc lập. Trước khi chia sẻ, cần xác nhận quyền chia sẻ với chủ dự án/Team Dev, đồng thời rà soát thông tin suy ra từ mã nguồn, giả định riêng của môi trường, bí mật và mọi nội dung không nên công bố.
-
-Repository hiện ở chế độ riêng tư. Ghi chú này chỉ nhắc về quy trình, bản thân nó không phải một cơ chế kiểm soát truy cập.
+Đây là tài liệu phục vụ việc tái dựng và review thí nghiệm. Bản diff là đề xuất cục bộ, không phải thay đổi đã được merge hoặc triển khai lên production; file SQL là ghi chú điều kiện môi trường local, không phải migration chính thức.
