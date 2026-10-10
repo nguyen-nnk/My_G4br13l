@@ -8,9 +8,10 @@ G4br13l là project tự học cá nhân tôi, bắt đầu từ việc đọc m
 
 | Phần | Nội dung |
 |---|---|
-| [Nhật ký điều tra](docs/Project_G4br13l.md) | Câu chuyện từ lúc quan sát code, hình thành giả thuyết, thử nghiệm, đề xuất sửa và kiểm thử lại. |
-| [Sổ tay thí nghiệm](docs/G4br13l_Investigation.md) | Lệnh chạy, dữ liệu thử nghiệm và ghi chú khi kiểm tra bản source trên môi trường local. |
+| [Nhật ký điều tra](docs/01.G4br13l_WriteUp.md) | Câu chuyện từ lúc quan sát code, hình thành giả thuyết, thử nghiệm, đề xuất sửa và kiểm thử lại. |
+| [Sổ tay thí nghiệm](docs/02.G4br13l_Investigation.md) | Lệnh chạy, dữ liệu thử nghiệm và ghi chú khi kiểm tra bản source trên môi trường local. |
 | [Lab mô phỏng độc lập](lab/README.md) | Ứng dụng Flask + SQLite nhỏ để minh họa quy tắc phân quyền, không cần source Gabriel. |
+| [Kết quả Verify Lab](lab/VERIFICATION.md) | Ghi lại kết quả chạy bộ test mô phỏng độc lập (6/6 lượt kiểm tra PASS) và giới hạn của kết quả. |
 | [Tài liệu dành cho review nội bộ](internal/README.md) | Bản diff đề xuất và ghi chú schema chỉ dùng khi rà soát bản source trên máy local. |
 
 ## Quan sát chính
@@ -31,7 +32,7 @@ Tôi đề xuất kiểm tra phân công lớp còn hiệu lực trước khi tr
 
 Thư mục `lab/` chứa mô hình Flask + SQLite dùng dữ liệu giả và Flask test client. Lab không import, không chạy và không cần sao chép ứng dụng Gabriel. Mục tiêu là giúp người đọc tự chạy lại các ca kiểm thử để hiểu vì sao cần kiểm tra quyền trên từng lớp.
 
-Bắt đầu tại [hướng dẫn chạy lab](lab/README.md).
+Bắt đầu tại [hướng dẫn chạy lab](lab/README.md) hoặc xem [kết quả Verify Lab](lab/VERIFICATION.md).
 
 ## Tiến độ
 
@@ -39,7 +40,7 @@ Bắt đầu tại [hướng dẫn chạy lab](lab/README.md).
 - [x] Ghi lại thí nghiệm local với dữ liệu giả.
 - [x] Đề xuất một bản sửa để review nội bộ.
 - [x] Tạo lab mô phỏng độc lập.
-- [ ] Chạy lab từ môi trường sạch và lưu lại kết quả.
+- [x] Chạy lab từ môi trường sạch và lưu kết quả kiểm thử.
 - [ ] Nhờ Team Dev xác nhận chính sách xem điểm danh theo lớp.
 - [ ] Kiểm tra thêm hành vi cache khi phân công thay đổi hoặc bị thu hồi.
 - [ ] Chỉ cân nhắc tạo pull request sau khi được review và cho phép.
