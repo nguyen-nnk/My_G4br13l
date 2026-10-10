@@ -2,17 +2,13 @@
 
 > Một project tự học và điều tra bảo mật cá nhân. Bắt đầu từ việc tò mò khi đọc code, rồi thử biến sự tò mò đó thành giả thuyết và thí nghiệm có thể kiểm tra lại.
 
-## Chuyện bắt đầu khá tình cờ
+## Cơ hội để nghịch code
 
-Tôi đã dùng website quản lý Thiếu nhi này suốt ba năm trong vai trò Huynh trưởng. Nhưng dùng một website và hiểu code bên trong nó là hai chuyện hoàn toàn khác nhau.
-
-Tôi vốn quen với Computer Architecture, Operating Systems, Computer Networks và gần đây là System Programming. Còn Web Development thì… nói thật là một thế giới khác. Sau khi có cơ hội tiếp cận source code, tôi bắt đầu đọc thử. Chiến thuật học cũng đơn giản thôi: không hiểu chỗ nào thì hỏi chỗ đó, thiếu kiến thức nào thì đắp kiến thức ấy rồi quay lại đọc tiếp.
+Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website doantnttbinhthuan. Mấy khi được chạm tay vào một hệ thống tầm cỡ, thực tế thế này, nên sau khi được mời làm cộng tác viên trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
 
 Trong lúc loay hoay với Python decorator, tôi gặp một dòng `@permission` đang bị comment out.
 
-*Ủa, vậy permission ở đây dùng để làm gì? Nếu nó không chạy thì route đang dựa vào đâu để quyết định ai được xem dữ liệu?*
-
-Từ một dòng code như thế, tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ chưa đủ để kết luận có vulnerability. Cần phải hiểu tính năng, xác định hành vi mong đợi, rồi mới tìm cách kiểm chứng.
+Từ một dòng code như thế, tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ biết đâu ăn may (may cho tôi.. xui cho dev) ở đây có vulnerability...
 
 ## Từ nghi vấn ban đầu đến bài toán cụ thể
 
