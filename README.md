@@ -8,11 +8,11 @@ G4br13l là project tự học cá nhân tôi, bắt đầu từ việc đọc m
 
 | Phần | Nội dung |
 |---|---|
-| [Nhật ký điều tra](docs/01.G4br13l_WriteUp.md) | Câu chuyện từ lúc quan sát code, hình thành giả thuyết, thử nghiệm, đề xuất sửa và kiểm thử lại. |
-| [Sổ tay thí nghiệm](docs/02.G4br13l_Investigation.md) | Lệnh chạy, dữ liệu thử nghiệm và ghi chú khi kiểm tra bản source trên môi trường local. |
-| [Lab mô phỏng độc lập](lab/README.md) | Ứng dụng Flask + SQLite nhỏ để minh họa quy tắc phân quyền, không cần source Gabriel. |
-| [Kết quả Verify Lab](lab/VERIFICATION.md) | Ghi lại kết quả chạy bộ test mô phỏng độc lập (6/6 lượt kiểm tra PASS) và giới hạn của kết quả. |
-| [Tài liệu dành cho review nội bộ](internal/README.md) | Bản diff đề xuất và ghi chú schema chỉ dùng khi rà soát bản source trên máy local. |
+| [WriteUp](docs/01.G4br13l_WriteUp.md) | Câu chuyện từ lúc quan sát code, hình thành giả thuyết, thử nghiệm, đề xuất sửa và kiểm thử lại. |
+| [Investigation](docs/02.G4br13l_Investigation.md) | Lệnh chạy, dữ liệu thử nghiệm và ghi chú khi kiểm tra bản source trên môi trường local. |
+| [Lab mô phỏng Local](lab/README.md) | Ứng dụng Flask + SQLite nhỏ để minh họa quy tắc phân quyền, không chứa source Gabriel gốc. |
+| [Kết quả Verify](lab/VERIFICATION.md) | Ghi lại kết quả chạy bộ test mô phỏng độc lập (6/6 lượt kiểm tra PASS). |
+| [Document for reviewer](internal/README.md) | Bản diff đề xuất và ghi chú schema chỉ dùng khi rà soát bản source trên máy local. |
 
 ## Quan sát chính
 
@@ -42,8 +42,6 @@ Bắt đầu tại [hướng dẫn chạy lab](lab/README.md) hoặc xem [kết 
 - [x] Tạo lab mô phỏng độc lập.
 - [x] Chạy lab từ môi trường sạch và lưu kết quả kiểm thử.
 - [ ] Nhờ Team Dev xác nhận chính sách xem điểm danh theo lớp.
-- [ ] Kiểm tra thêm hành vi cache khi phân công thay đổi hoặc bị thu hồi.
-- [ ] Chỉ cân nhắc tạo pull request sau khi được review và cho phép.
 
 ## Phạm vi và giới hạn
 
