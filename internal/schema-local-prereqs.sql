@@ -1,6 +1,6 @@
 -- Các điều kiện schema chỉ dành cho bản source mirror chạy trên máy local.
 -- Kiểm tra schema hiện có trước; chỉ chạy câu lệnh cho đối tượng còn thiếu.
--- Đây KHÔNG phải migration chính thức. Giữ riêng để rà soát nội bộ.
+-- Đây KHÔNG phải migration chính thức; chỉ dùng làm ghi chú cho môi trường local.
 
 ALTER TABLE course ADD COLUMN shift_id INT NULL;
 
