@@ -1,24 +1,22 @@
 # My_G4br13l — Từ một dòng `@permission` đến câu hỏi phân quyền
 
-> Một project tự học và điều tra bảo mật cá nhân. Bắt đầu từ việc tò mò khi đọc code, rồi thử biến sự tò mò đó thành giả thuyết và thí nghiệm có thể kiểm tra lại.
+> Một project tự học và điều tra bảo mật cá nhân. Bắt đầu từ việc tò mò khi đọc code, rồi thử biến sự tò mò đó thành giả thuyết và thí nghiệm có thể kiểm tra. (Thêm phần may mắn nữa...)
 
 ## Cơ hội để nghịch code
 
-Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website doantnttbinhthuan. Mấy khi được chạm tay vào một hệ thống tầm cỡ, thực tế thế này, nên sau khi được mời làm cộng tác viên trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
+Làm Huynh trưởng và đã xài cái website quản lý Thiếu nhi này suốt ba năm trời, nay tôi có cơ hội tham gia Team Dev website **doantnttbinhthuan**. Mấy khi được chạm tay vào một hệ thống tầm cỡ thực tế thế này, nên sau khi được mời làm cộng tác viên trên GitHub, tôi bắt đầu mổ xẻ đống code để xem bên trong có gì.
 
-Trong lúc loay hoay với Python decorator, tôi gặp một dòng `@permission` đang bị comment out.
+Trong lúc loay hoay bị code đè với Python decorator, tôi gặp một dòng `@permission` đang bị comment out.
 
-Từ một dòng code như thế, tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ biết đâu ăn may (may cho tôi.. xui cho dev) ở đây có vulnerability...
+Từ một dòng code như thế, tôi bắt đầu tìm hiểu **Authentication (AuthN)** và **Authorization (AuthZ)**, rồi đặt giả thuyết để kiểm tra. Càng đọc tôi càng nhận ra thấy một đoạn code đáng ngờ biết đâu ăn may (may cho tôi.. xui cho dev) ở đây có vulnerability kiểu phân quyền như: DOR / BOLA...
 
 ## Từ nghi vấn ban đầu đến bài toán cụ thể
 
-Lúc đầu tôi thử kiểm tra một API tra cứu thông tin người dùng. Nhưng kết quả trả về chưa chắc đã là lỗi: một Huynh trưởng xem được thông tin cơ bản của Huynh trưởng khác có thể hoàn toàn phù hợp với cách website được thiết kế.
+Vậy thì, câu hỏi kiểm chứng tôi sẽ tìm hiểu là: **Huynh trưởng phụ trách lớp A có được xem sổ điểm danh của lớp B không?**
 
-Thế nên tôi chuyển sang một tình huống có ranh giới rõ hơn: **Huynh trưởng phụ trách lớp A có được xem sổ điểm danh của lớp B không?**
+Tôi tạo dữ liệu giả cho hai Huynh trưởng và hai lớp, chạy ứng dụng trên môi trường local, rồi kiểm tra các trường hợp truy cập. Trên bản source local trước khi thêm bước kiểm tra, tài khoản phụ trách lớp A vẫn nhận được dữ liệu điểm danh của lớp B với HTTP `200`! BOOM!!! Thế là report này ra đời!
 
-Tôi tạo dữ liệu giả cho hai Huynh trưởng và hai lớp, chạy ứng dụng trên môi trường local, rồi kiểm tra các trường hợp truy cập. Trên bản source local trước khi thêm bước kiểm tra, tài khoản phụ trách lớp A vẫn nhận được dữ liệu điểm danh của lớp B với HTTP `200`. Đây là bằng chứng đáng chú ý hơn, với giả định cần được Team Dev xác nhận rằng quyền xem điểm danh phải theo lớp được phân công.
-
-Tôi thử đề xuất kiểm tra phân công còn hiệu lực trước khi trả dữ liệu và kiểm thử lại trên local:
+Tôi thử đề xuất bản fix bổ sung: kiểm tra phân công còn hiệu lực trước khi trả dữ liệu và kiểm thử lại trên local:
 
 | Trường hợp | Trước khi sửa | Sau khi sửa |
 |---|---:|---:|
@@ -26,7 +24,7 @@ Tôi thử đề xuất kiểm tra phân công còn hiệu lực trước khi tr
 | Huynh trưởng A xem lớp B | `200 OK` | `403 Forbidden` |
 | Huynh trưởng B xem lớp B | `200 OK` | `200 OK` |
 
-Vậy là tôi có một kết quả khớp với quy tắc đang thử nghiệm. Nhưng khoan — **đây là kết quả trên môi trường local, chưa phải kết luận về production**, và quy tắc nghiệp vụ vẫn cần được Team Dev xác nhận. Tôi muốn giữ rõ ranh giới đó thay vì viết cho hoành tráng rồi lỡ bị hỏi sâu lại không có bằng chứng.
+Vậy là tôi có một kết quả khớp với quy tắc đang thử nghiệm.
 
 ## Đi một vòng trong repository
 
@@ -53,8 +51,8 @@ Bắt đầu từ [hướng dẫn chạy Lab](lab/README.md), hoặc xem [biên 
 - [x] Đề xuất bản sửa kiểm tra quyền truy cập theo lớp.
 - [x] Dựng Lab mô phỏng độc lập.
 - [x] Chạy Lab từ môi trường sạch và ghi lại kết quả.
-- [ ] Nhờ Team Dev xác nhận chính sách xem điểm danh theo lớp.
-- [ ] Chỉ cân nhắc contribution hoặc pull request sau khi quy tắc và bản sửa được review.
+- [ ] Nhờ Team Dev xác nhận.
+- [ ] Cân nhắc contribution hoặc pull request sau khi bản sửa được review.
 
 ## Mấy điều cần nói rõ
 
